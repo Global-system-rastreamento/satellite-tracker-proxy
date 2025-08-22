@@ -4,6 +4,44 @@ import datetime
 
 app = Flask(__name__)
 
+def decode_payload(payload_hex):
+    try:
+        payload_bytes = bytes.fromhex(payload_hex[2:])
+        if len(payload_bytes) != 9:
+            raise ValueError("Payload length is not 9 bytes.")
+
+        byte0 = payload_bytes[0]
+        message_type = byte0 & 0b11
+        battery_status = (byte0 >> 2) & 0b1
+        gps_valid = (byte0 >> 3) & 0b1
+
+        lat_bytes = payload_bytes[1:4]
+        lat_int = int.from_bytes(lat_bytes, 'big', signed=True)
+        latitude = lat_int * (90.0 / (2**23))
+
+        lon_bytes = payload_bytes[4:7]
+        lon_int = int.from_bytes(lon_bytes, 'big', signed=True)
+        longitude = lon_int * (180.0 / (2**23))
+
+        speed_kmh = int.from_bytes(payload_bytes[7], 'big')
+        
+        byte8 = payload_bytes[8]
+        battery_byte8 = (byte8 >> 7) & 0b1
+        time_modulo = byte8 & 0b1111111
+
+        return {
+            'message_type': message_type,
+            'battery_status': 'OK' if battery_status == 0 else 'Replace',
+            'gps_valid': 'Valid' if gps_valid == 0 else 'Failed',
+            'latitude': round(latitude, 6),
+            'longitude': round(longitude, 6),
+            'speed_kmh': speed_kmh,
+            'battery_status_byte8': 'OK' if battery_byte8 == 0 else 'Replace',
+            'time_modulo': time_modulo
+        }
+    except (ValueError, IndexError) as e:
+        print(f"Erro na decodificação do payload: {e}")
+        return None
 @app.route("/messages", methods=["POST"])
 def receive_messages():
     xml_data = request.data
