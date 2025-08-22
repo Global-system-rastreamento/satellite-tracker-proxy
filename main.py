@@ -63,6 +63,18 @@ def receive_messages():
                 print(f"  Unix Time: {unix_time}")
                 print(f"  Payload: {payload}")
 
+                decoded_data = decode_payload(payload)
+                if decoded_data:
+                    print(f"  Latitude: {decoded_data['latitude']}°")
+                    print(f"  Longitude: {decoded_data['longitude']}°")
+                    print(f"  Velocidade: {decoded_data['speed_kmh']} km/h")
+                    print(f"  Tipo de Mensagem: {decoded_data['message_type']}")
+                    print(f"  Status da Bateria (Byte 0): {decoded_data['battery_status']}")
+                    print(f"  Status da Bateria (Byte 8): {decoded_data['battery_status_byte8']}")
+                    print(f"  GPS Válido: {decoded_data['gps_valid']}")
+                else:
+                    print("  Erro: Falha ao decodificar a carga de dados.")
+
         elif root.tag == "prvmsgs":
             prv_message_id = root.attrib.get("prvMessageID")
             print(f"Pacote de provisionamento (prvmsgs) recebido. prvMessageID: {prv_message_id}")
