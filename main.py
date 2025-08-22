@@ -15,7 +15,11 @@ def receive_messages():
             pass
 
         elif root.tag == "prvmsgs":
-            pass
+            prv_message_id = root.attrib.get("prvMessageID")
+            print(f"Pacote de provisionamento (prvmsgs) recebido. prvMessageID: {prv_message_id}")
+            
+            response_xml = f"""<?xml version="1.0" encoding="UTF-8"?><prvResponseMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://cody.glpconnect.com/XSD/ProvisionResponse_Rev1_0.xsd" deliveryTimeStamp="{datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S GMT')}" correlationID="{prv_message_id}"><state>PASS</state></prvResponseMsg>"""
+            return response_xml, 200, {'Content-Type': 'text/xml'}
 
         else:
             print(f"Formato XML desconhecido: {root.tag}")
