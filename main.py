@@ -5,7 +5,7 @@ import datetime
 from app.core.logger import get_logger
 
 app = Flask(__name__)
-logger = get_logger()
+logger = get_logger(__name__)
 
 LEAP_SECONDS = -18
 def decode_time(gps_value, unix_time):
