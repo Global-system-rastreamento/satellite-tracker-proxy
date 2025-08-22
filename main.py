@@ -9,7 +9,18 @@ def receive_messages():
     xml_data = request.data
 
     try:
-        pass
+        root = ElementTree.fromstring(xml_data)
+
+        if root.tag == "stuMessages":
+            pass
+
+        elif root.tag == "prvmsgs":
+            pass
+
+        else:
+            print(f"Formato XML desconhecido: {root.tag}")
+            response_xml = """<?xml version="1.0" encoding="UTF-8"?><stuResponseMsg><state>fail</state><stateMessage>Unknown message type.</stateMessage></stuResponseMsg>"""
+            return response_xml, 400, {'Content-Type': 'text/xml'}
 
     except ElementTree.ParseError as e:
         print(f"Erro ao analisar o XML: {e}")
