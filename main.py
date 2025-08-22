@@ -83,6 +83,9 @@ def receive_messages():
 
                 decoded_data = decode_payload(payload)
                 if decoded_data:
+                    event_time_utc = decode_time(decoded_data['time_modulo'], int(unix_time))
+                    
+                    logger.info(f"  Horário do evento (UTC): {event_time_utc.isoformat()}")
                     logger.info(f"  Latitude: {decoded_data['latitude']}°")
                     logger.info(f"  Longitude: {decoded_data['longitude']}°")
                     logger.info(f"  Velocidade: {decoded_data['speed_kmh']} km/h")
