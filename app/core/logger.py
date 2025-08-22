@@ -1,6 +1,5 @@
 import sys
 from loguru import logger
-from app.config.settings import settings
 
 # Remove o handler padrão para evitar logs duplicados
 logger.remove()
@@ -8,7 +7,7 @@ logger.remove()
 # Adiciona um novo "sink" para o stdout com um formato mais rico e colorido
 logger.add(
     sys.stdout,
-    level=settings.LOG_LEVEL.upper(),
+    level="INFO",
     format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
            "<level>{level: <8}</level> | "
            "<cyan>{name}:{function}:{line}</cyan> - <level>{message}</level>",
