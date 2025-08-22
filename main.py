@@ -12,7 +12,18 @@ def receive_messages():
         root = ElementTree.fromstring(xml_data)
 
         if root.tag == "stuMessages":
-            pass
+            message_id = root.attrib.get("messageID")
+            print(f"Pacote de dados (stuMessages) recebido. MessageID: {message_id}")
+
+            for stu_message in root.findall("stuMessage"):
+                esn = stu_message.find("esn").text
+                unix_time = stu_message.find("unixTime").text
+                payload = stu_message.find("payload").text
+
+                print("-" * 20)
+                print(f"  ESN: {esn}")
+                print(f"  Unix Time: {unix_time}")
+                print(f"  Payload: {payload}")
 
         elif root.tag == "prvmsgs":
             prv_message_id = root.attrib.get("prvMessageID")
