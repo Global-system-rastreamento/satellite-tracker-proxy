@@ -7,6 +7,21 @@ from app.core.logger import get_logger
 app = Flask(__name__)
 logger = get_logger()
 
+LEAP_SECONDS = -18
+def decode_time(gps_value, unix_time):
+    utc_time = datetime.datetime.fromtimestamp(unix_time, tz=datetime.timezone.utc)
+    gw_time_seconds = utc_time.hour * 3600 + utc_time.minute * 60 + utc_time.second
+    
+    gps_time_of_day = (gps_value * 6) + (gw_time_seconds // 720) * 720
+    
+    utc_corrected_time_seconds = gps_time_of_day + LEAP_SECONDS
+    
+    if utc_corrected_time_seconds < gw_time_seconds:
+        utc_corrected_time_seconds += 720
+    
+    final_time = utc_time.timestamp() + utc_corrected_time_seconds
+    
+    return datetime.datetime.fromtimestamp(final_time, tz=datetime.timezone.utc)
 def decode_payload(payload_hex):
     try:
         payload_bytes = bytes.fromhex(payload_hex[2:])
