@@ -97,8 +97,8 @@ def receive_messages():
                     logger.info("  Erro: Falha ao decodificar a carga de dados.")
                     
                 
-                response_xml = f"""<?xml version="1.0" encoding="UTF-8"?><stuResponseMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://cody.glpconnect.com/XSD/StuResponse_Rev1_0.xsd" deliveryTimeStamp="{datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S GMT')}" correlationID="{message_id}"><state>pass</state><stateMessage>Messages received and processed successfully.</stateMessage></stuResponseMsg>"""
-                return response_xml, 200, {'Content-Type': 'text/xml'}
+            response_xml = f"""<?xml version="1.0" encoding="UTF-8"?><stuResponseMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://cody.glpconnect.com/XSD/StuResponse_Rev1_0.xsd" deliveryTimeStamp="{datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S GMT')}" correlationID="{message_id}"><state>pass</state><stateMessage>Messages received and processed successfully.</stateMessage></stuResponseMsg>"""
+            return response_xml, 200, {'Content-Type': 'text/xml'}
 
         elif root.tag == "prvmsgs":
             prv_message_id = root.attrib.get("prvMessageID")
