@@ -41,7 +41,7 @@ def decode_payload(payload_hex):
         lon_int = int.from_bytes(lon_bytes, 'big', signed=True)
         longitude = lon_int * (180.0 / (2**23))
 
-        speed_kmh = int.from_bytes(payload_bytes[7], 'big')
+        speed_kmh = payload_bytes[7]
         
         byte8 = payload_bytes[8]
         battery_byte8 = (byte8 >> 7) & 0b1
