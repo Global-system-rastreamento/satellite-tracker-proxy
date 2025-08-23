@@ -3,6 +3,7 @@ from xml.etree import ElementTree
 import datetime
 
 from app.core.logger import get_logger
+from app.connection.main_server_conection import send_dict_to_server
 
 app = Flask(__name__)
 logger = get_logger(__name__)
@@ -84,6 +85,7 @@ def receive_messages():
                 decoded_data = decode_payload(payload)
                 if decoded_data:
                     event_time_utc = decode_time(decoded_data['time_modulo'], int(unix_time))
+                    decoded_data["event_time_utc"] = event_time_utc
                     
                     logger.info(f"  Horário do evento (UTC): {event_time_utc.isoformat()}")
                     logger.info(f"  Latitude: {decoded_data['latitude']}°")
@@ -93,6 +95,8 @@ def receive_messages():
                     logger.info(f"  Status da Bateria (Byte 0): {decoded_data['battery_status']}")
                     logger.info(f"  Status da Bateria (Byte 8): {decoded_data['battery_status_byte8']}")
                     logger.info(f"  GPS Válido: {decoded_data['gps_valid']}")
+
+                    send_dict_to_server(decoded_data)
                 else:
                     logger.info("  Erro: Falha ao decodificar a carga de dados.")
                     
