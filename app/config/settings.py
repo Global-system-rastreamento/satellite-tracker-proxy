@@ -9,6 +9,6 @@ class Settings(BaseSettings):
 
     LOG_LEVEL: str = "INFO"
 
-    MAIN_SERVER_ADDRESS: tuple = ()
+    MAIN_SERVER_ADDRESS: str = '...'
 
 settings = Settings()
