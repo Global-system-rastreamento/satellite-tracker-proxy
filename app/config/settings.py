@@ -9,6 +9,7 @@ class Settings(BaseSettings):
 
     LOG_LEVEL: str = "INFO"
 
-    MAIN_SERVER_ADDRESS: str = '...'
+    MAIN_SERVER_HOST: str = "..."
+    MAIN_SERVER_PORT: str = "..."
 
 settings = Settings()

@@ -5,8 +5,9 @@ from app.config.settings import settings
 
 def send_dict_to_server(data):
     try:
+        address = (settings.MAIN_SERVER_HOST, int(settings.MAIN_SERVER_PORT))
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect(eval(settings.MAIN_SERVER_ADDRESS))
+        sock.connect(address)
 
         message = json.dumps(data)
         message_encoded = message.encode('utf-8')
