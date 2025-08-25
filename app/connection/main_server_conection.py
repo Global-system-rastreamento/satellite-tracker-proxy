@@ -33,11 +33,13 @@ class MainServerConnection:
         if self.heartbeat_timer:
             self.heartbeat_timer.cancel()
 
-    def send_data(self, data):
+    def send_data(self, esn, data):
         try:
             while not self.running:
                 self.connect()
 
+            data["ESN"] = esn
+            
             message = json.dumps(data)
             message_encoded = message.encode('utf-8')
             message_ecapsulated = b"\xff" + message_encoded + b"\xfe"
