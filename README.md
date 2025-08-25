@@ -78,6 +78,3 @@ O aplicativo envia dados para o servidor principal usando comunicação de socke
 ## Logging
 
 O aplicativo usa a biblioteca `loguru` para logging. Os logs são gravados no console e em um arquivo. O nível de log pode ser configurado usando a configuração `LOG_LEVEL`.
-
-
-
