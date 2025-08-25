@@ -1,13 +1,19 @@
 import socket
 import json
+import time
+import threading
 
 from app.config.settings import settings
 
-def send_dict_to_server(data):
-    try:
-        address = (settings.MAIN_SERVER_HOST, int(settings.MAIN_SERVER_PORT))
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect(address)
+class MainServerConnection:
+    def __init__(self):
+        self.host = settings.MAIN_SERVER_HOST
+        self.port = int(settings.MAIN_SERVER_PORT)
+        self.socket = None
+        self.running = False
+        self.last_data_sent = time.time()
+        self.heartbeat_interval = 5
+        self.heartbeat_timer = None
 
         message = json.dumps(data)
         message_encoded = message.encode('utf-8')
