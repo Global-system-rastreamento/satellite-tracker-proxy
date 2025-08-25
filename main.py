@@ -3,7 +3,7 @@ from xml.etree import ElementTree
 import datetime
 
 from app.core.logger import get_logger
-from app.connection.main_server_conection import send_dict_to_server
+from app.connection.main_server_conection import main_server_connection
 
 app = Flask(__name__)
 logger = get_logger(__name__)
@@ -96,7 +96,7 @@ def receive_messages():
                     logger.info(f"  Status da Bateria (Byte 8): {decoded_data['battery_status_byte8']}")
                     logger.info(f"  GPS Válido: {decoded_data['gps_valid']}")
 
-                    send_dict_to_server(decoded_data)
+                    main_server_connection.send_data(esn, decoded_data)
                 else:
                     logger.info("  Erro: Falha ao decodificar a carga de dados.")
                     
