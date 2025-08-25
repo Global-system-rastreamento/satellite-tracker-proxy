@@ -61,3 +61,5 @@ class MainServerConnection:
         if self.running:
             heartbeat_data = {"message_type": "heartbeat"}
             self.send_data(heartbeat_data)
+
+main_server_connection = MainServerConnection()
